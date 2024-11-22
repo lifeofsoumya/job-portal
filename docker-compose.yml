@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+  mongo1:
+    image: mongo:5
+    command: mongod --replSet myReplicaSet --bind_ip localhost,mongo1
+    ports:
+      - "27017:27017"
+    networks:
+      - mongoCluster
+
+  mongo2:
+    image: mongo:5
+    command: mongod --replSet myReplicaSet --bind_ip localhost,mongo2
+    ports:
+      - "27018:27017"
+    networks:
+      - mongoCluster
+
+  mongo3:
+    image: mongo:5
+    command: mongod --replSet myReplicaSet --bind_ip localhost,mongo3
+    ports:
+      - "27019:27017"
+    networks:
+      - mongoCluster
+
+  mongo-init:
+    image: mongo:5
+    restart: "no"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    command: >
+      bash -c "
+      sleep 10; 
+      mongo --host mongo1 --eval 'rs.initiate({
+          _id : \"myReplicaSet\",
+          members : [
+              { _id : 0, host : \"mongo1\" },
+              { _id : 1, host : \"mongo2\" },
+              { _id : 2, host : \"mongo3\" }
+          ]
+      })'
+      "
+
+networks:
+  mongoCluster:
