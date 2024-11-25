@@ -9,6 +9,7 @@ datasource db {
 }
 
 enum Role {
+  NOT_SET
   JOB_SEEKER
   EMPLOYER
   ADMIN
@@ -61,7 +62,7 @@ model User {
   username      String?          @unique @default(nanoid(5)) // might not use
   slug          String?          @unique @default(nanoid(5))
   image         String?
-  role          Role             @default(JOB_SEEKER)
+  role          Role             @default(NOT_SET)
   location      String?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
