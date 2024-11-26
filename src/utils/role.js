@@ -8,5 +8,6 @@ export default async function userRole(){
         where: { id: session.user.id },
         select: { role : true }
     })
+    if(!user) return null;
     return user.role;
 }

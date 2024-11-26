@@ -6,6 +6,7 @@ export async function onBoardingCheck(userId) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
     })
+    if(!user) return null;
     return user.role;
   } catch (error) {
     console.error('Failed to update user type:', error)
