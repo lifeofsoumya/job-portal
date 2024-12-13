@@ -13,7 +13,6 @@ export async function fetchJobsFilter({ searchTerm, jobType, experienceLevel, lo
       ],
     }),
     ...(jobType && jobType !== "All" && { category: jobType }),
-    // ...(experienceLevel && experienceLevel !== "All" && { keywords: { has: experienceLevel } }),
     ...(location && location !== "All" && { location }),
   };
 
